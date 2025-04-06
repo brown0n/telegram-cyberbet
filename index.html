@@ -3,74 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOONT | CS2 Predictor</title>
+    <title>BOONT Predictor</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="app-container">
-        <div class="balance-section">
-            <h1>5 000</h1>
-            <h2>BOONT</h2>
-            <p class="subscription-text">ЗА ПОДПИСКУ В ТГ</p>
-            <button class="subscribe-btn">Подписаться</button>
-        </div>
+        <header class="app-header">
+            <h1>BOONT Predictor</h1>
+            <div class="balance">5 000 BOONT</div>
+        </header>
 
-        <div class="divider"></div>
+        <nav class="tabs-container">
+            <button class="tab active" data-tab="predictor">Предиктор</button>
+            <button class="tab" data-tab="bets">Мои ставки</button>
+            <button class="tab" data-tab="stats">Статистика</button>
+            <button class="tab" data-tab="rating">Рейтинг</button>
+            <button class="tab" data-tab="referral">Рефералка</button>
+        </nav>
 
-        <div class="tournament-section">
-            <h3>ПЕРЕЙТИ В РАЗДЕЛ</h3>
-            <div class="tournament-code">#5742B</div>
-            <p class="tournament-desc">Место на турнире</p>
-        </div>
-
-        <div class="divider"></div>
-
-        <div class="matches-section">
-            <h3>ТУРНИРЫ</h3>
+        <main class="content-area">
+            <div class="tab-content active" data-tab="predictor">
+                <h2>Раздел "Предиктор"</h2>
+                <p>Здесь будут доступные для ставок матчи</p>
+            </div>
             
-            <div class="tournament-header">
-                <h4>PGL Bucharest 2025</h4>
+            <div class="tab-content" data-tab="bets">
+                <h2>Мои ставки</h2>
+                <p>История ваших ставок</p>
             </div>
-
-            <div class="match-list">
-                <div class="match-item">
-                    <div class="team-info">
-                        <span>G2 Esports</span>
-                        <span class="odds">1.02</span>
-                    </div>
-                    <div class="match-time">Завтра 10:00</div>
-                    <div class="team-info">
-                        <span>Rare Atom</span>
-                        <span class="odds">14.00</span>
-                    </div>
-                </div>
-
-                <!-- Остальные матчи по аналогии -->
-                <div class="match-item">
-                    <div class="team-info">
-                        <span>Team Falcons</span>
-                        <span class="odds">1.58</span>
-                    </div>
-                    <div class="match-time">Завтра 10:00</div>
-                    <div class="team-info">
-                        <span>GameFLegion</span>
-                        <span class="odds">2.40</span>
-                    </div>
-                </div>
-
-                <div class="other-teams">
-                    <div class="team-odds">
-                        <span>3DMAX</span>
-                        <span class="odds">2.05</span>
-                    </div>
-                    <div class="team-odds">
-                        <span>Astralis</span>
-                        <span class="odds">1.78</span>
-                    </div>
-                </div>
+            
+            <div class="tab-content" data-tab="stats">
+                <h2>Статистика</h2>
+                <p>Ваша игровая статистика</p>
             </div>
+            
+            <div class="tab-content" data-tab="rating">
+                <h2>Рейтинг</h2>
+                <p>Топ игроков</p>
+            </div>
+            
+            <div class="tab-content" data-tab="referral">
+                <h2>Реферальная программа</h2>
+                <p>Приглашайте друзей и получайте бонусы</p>
+            </div>
+        </main>
+
+        <div class="bottom-menu">
+            <button class="deposit-btn">Пополнить баланс</button>
         </div>
     </div>
 
