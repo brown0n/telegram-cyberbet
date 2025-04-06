@@ -192,12 +192,6 @@ body {
     font-size: 14px;
 }
 
-.team-logo {
-    width: 24px;
-    height: 24px;
-    margin: 0 8px;
-}
-
 .team.left {
     justify-content: flex-start;
 }
@@ -206,10 +200,32 @@ body {
     justify-content: flex-end;
 }
 
+.team-logo {
+    width: 24px;
+    height: 24px;
+    margin: 0 8px;
+    object-fit: contain;
+}
+
 .vs {
     font-weight: 700;
     color: var(--accent-color);
     font-size: 14px;
+}
+
+.teams-preview {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 12px 0;
+    justify-content: center;
+}
+
+.team-icon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .options-container {
@@ -231,6 +247,8 @@ body {
 
 .option-btn:hover {
     transform: translateY(-2px);
+    background: var(--primary-color);
+    color: #000;
 }
 
 .option-text {
@@ -295,50 +313,40 @@ body {
     font-size: 14px;
 }
 
+.bet-option {
+    max-width: 70%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
 .bet-status {
     font-weight: 600;
 }
 
-.bet-status.win {
+.bet-item.win {
+    border-left: 3px solid var(--primary-color);
+}
+
+.bet-item.lose {
+    border-left: 3px solid var(--danger-color);
+}
+
+.bet-item.win .bet-status {
     color: var(--primary-color);
 }
 
-.bet-status.lose {
+.bet-item.lose .bet-status {
     color: var(--danger-color);
 }
 
-.bet-status.pending {
-    color: var(--accent-color);
+.empty-history {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-secondary);
 }
 
 .notification {
-    position: fixed;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: var(--primary-dark);
-    color: white;
-    padding: 12px 20px;
-    border-radius: 8px;
-    font-weight: 500;
-    opacity: 0;
-    transition: opacity 0.3s;
-    z-index: 100;
-}
-
-.notification.show {
-    opacity: 1;
-}
-
-@media (max-width: 480px) {
-    .options-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .team-name {
-        font-size: 12px;
-    }
-    .notification {
     position: fixed;
     bottom: 20px;
     left: 50%;
@@ -361,6 +369,7 @@ body {
 
 .notification.success {
     background: var(--primary-color);
+    color: #000;
 }
 
 .notification.error {
@@ -370,4 +379,24 @@ body {
 .notification.info {
     background: var(--accent-color);
 }
+
+@media (max-width: 480px) {
+    .options-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-name {
+        font-size: 12px;
+    }
+    
+    .app-header {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .balance-container {
+        order: -1;
+        width: 100%;
+        justify-content: center;
+    }
 }
