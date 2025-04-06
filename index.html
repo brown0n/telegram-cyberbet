@@ -4,47 +4,74 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BOONT | CS2 Predictor</title>
-    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
     <div class="app-container">
-        <header class="app-header">
-            <div class="logo-container">
-                <img src="assets/boont-logo.png" alt="BOONT" class="logo">
-                <span class="app-name">BOONT</span>
-            </div>
-            <div class="balance-container">
-                <span class="balance">0</span>
-                <span class="currency">BOONT</span>
-                <button class="bonus-btn" id="bonus-btn">🎁</button>
-            </div>
-        </header>
-
-        <div class="tabs-container">
-            <div class="tabs">
-                <button class="tab active" data-tab="matches">Матчи</button>
-                <button class="tab" data-tab="tournaments">Турниры</button>
-                <button class="tab" data-tab="history">История</button>
-            </div>
+        <div class="balance-section">
+            <h1>5 000</h1>
+            <h2>BOONT</h2>
+            <p class="subscription-text">ЗА ПОДПИСКУ В ТГ</p>
+            <button class="subscribe-btn">Подписаться</button>
         </div>
 
-        <main class="content-area">
-            <div class="tab-content active" data-tab="matches">
-                <div class="predictions-list" id="matches-list"></div>
-            </div>
-            
-            <div class="tab-content" data-tab="tournaments">
-                <div class="predictions-list" id="tournaments-list"></div>
-            </div>
-            
-            <div class="tab-content" data-tab="history">
-                <div class="history-list" id="history-list"></div>
-            </div>
-        </main>
+        <div class="divider"></div>
 
-        <div class="notification" id="notification"></div>
+        <div class="tournament-section">
+            <h3>ПЕРЕЙТИ В РАЗДЕЛ</h3>
+            <div class="tournament-code">#5742B</div>
+            <p class="tournament-desc">Место на турнире</p>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="matches-section">
+            <h3>ТУРНИРЫ</h3>
+            
+            <div class="tournament-header">
+                <h4>PGL Bucharest 2025</h4>
+            </div>
+
+            <div class="match-list">
+                <div class="match-item">
+                    <div class="team-info">
+                        <span>G2 Esports</span>
+                        <span class="odds">1.02</span>
+                    </div>
+                    <div class="match-time">Завтра 10:00</div>
+                    <div class="team-info">
+                        <span>Rare Atom</span>
+                        <span class="odds">14.00</span>
+                    </div>
+                </div>
+
+                <!-- Остальные матчи по аналогии -->
+                <div class="match-item">
+                    <div class="team-info">
+                        <span>Team Falcons</span>
+                        <span class="odds">1.58</span>
+                    </div>
+                    <div class="match-time">Завтра 10:00</div>
+                    <div class="team-info">
+                        <span>GameFLegion</span>
+                        <span class="odds">2.40</span>
+                    </div>
+                </div>
+
+                <div class="other-teams">
+                    <div class="team-odds">
+                        <span>3DMAX</span>
+                        <span class="odds">2.05</span>
+                    </div>
+                    <div class="team-odds">
+                        <span>Astralis</span>
+                        <span class="odds">1.78</span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="app.js"></script>
