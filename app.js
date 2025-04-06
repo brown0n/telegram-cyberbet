@@ -1,30 +1,25 @@
 const tg = window.Telegram.WebApp;
-tg.expand();
-tg.setHeaderColor('#2E4F4F');
-tg.setBackgroundColor('#121212');
+const USER_DATA_KEY = 'boont_user_data';
 
 // Состояние приложения
 const state = {
     balance: 2000,
     currency: "BOONT",
-    activeTab: 'tournaments',
-    predictions: {},
-    userBets: [],
+    bets: [],
     lastBonusDate: null
-};
-
-// Ключи для хранения данных
-const STORAGE_KEYS = {
-    BALANCE: 'boont_balance',
-    BETS: 'boont_bets',
-    BONUS_DATE: 'boont_last_bonus'
 };
 
 // Инициализация
 async function init() {
-    await loadData();
-    renderPredictions();
+    tg.expand();
+    tg.setHeaderColor('#2E4F4F');
+    tg.setBackgroundColor('#121212');
+    
+    await loadUserData();
+    renderUI();
     setupEventListeners();
+    
+    // Проверка бонуса при запуске
     checkDailyBonus();
 }
 
@@ -32,168 +27,131 @@ async function init() {
 // Система сохранения данных
 // ======================
 
-async function saveData() {
+async function saveUserData() {
+    const dataToSave = {
+        balance: state.balance,
+        bets: state.bets,
+        lastBonusDate: state.lastBonusDate
+    };
+
     try {
         // Пробуем сохранить в CloudStorage Telegram
         if (tg?.CloudStorage?.setItem) {
-            await tg.CloudStorage.setItem(STORAGE_KEYS.BALANCE, state.balance.toString());
-            await tg.CloudStorage.setItem(STORAGE_KEYS.BETS, JSON.stringify(state.userBets));
-            await tg.CloudStorage.setItem(STORAGE_KEYS.BONUS_DATE, state.lastBonusDate || '');
-        } 
-        // Fallback на localStorage
-        else {
-            localStorage.setItem(STORAGE_KEYS.BALANCE, state.balance);
-            localStorage.setItem(STORAGE_KEYS.BETS, JSON.stringify(state.userBets));
-            localStorage.setItem(STORAGE_KEYS.BONUS_DATE, state.lastBonusDate || '');
+            await tg.CloudStorage.setItem(USER_DATA_KEY, JSON.stringify(dataToSave));
+            console.log("Данные сохранены в CloudStorage");
         }
+        
+        // Всегда сохраняем в localStorage как fallback
+        localStorage.setItem(USER_DATA_KEY, JSON.stringify(dataToSave));
     } catch (e) {
         console.error("Ошибка сохранения:", e);
     }
 }
 
-async function loadData() {
+async function loadUserData() {
+    let loadedData = null;
+    
     try {
         // Пробуем загрузить из CloudStorage Telegram
         if (tg?.CloudStorage?.getItem) {
-            const balance = await tg.CloudStorage.getItem(STORAGE_KEYS.BALANCE);
-            const bets = await tg.CloudStorage.getItem(STORAGE_KEYS.BETS);
-            const bonusDate = await tg.CloudStorage.getItem(STORAGE_KEYS.BONUS_DATE);
-            
-            state.balance = balance ? parseInt(balance) : 2000;
-            state.userBets = bets ? JSON.parse(bets) : [];
-            state.lastBonusDate = bonusDate || null;
-        } 
-        // Fallback на localStorage
-        else {
-            state.balance = parseInt(localStorage.getItem(STORAGE_KEYS.BALANCE)) || 2000;
-            state.userBets = JSON.parse(localStorage.getItem(STORAGE_KEYS.BETS)) || [];
-            state.lastBonusDate = localStorage.getItem(STORAGE_KEYS.BONUS_DATE) || null;
+            const cloudData = await tg.CloudStorage.getItem(USER_DATA_KEY);
+            if (cloudData) loadedData = JSON.parse(cloudData);
+        }
+        
+        // Если в CloudStorage нет, пробуем localStorage
+        if (!loadedData) {
+            const localData = localStorage.getItem(USER_DATA_KEY);
+            if (localData) loadedData = JSON.parse(localData);
+        }
+        
+        if (loadedData) {
+            state.balance = loadedData.balance || 2000;
+            state.bets = loadedData.bets || [];
+            state.lastBonusDate = loadedData.lastBonusDate || null;
         }
     } catch (e) {
         console.error("Ошибка загрузки:", e);
     }
-    
-    updateUI();
 }
 
 // ======================
 // Бизнес-логика
 // ======================
 
-async function placeBet(predictionId, optionId, odds) {
-    const betAmount = 100;
-    
-    if (state.balance < betAmount) {
-        tg.showAlert("Недостаточно BOONT!");
-        tg.HapticFeedback.notificationOccurred('error');
-        return;
+async function placeBet(amount, prediction, option) {
+    if (state.balance < amount) {
+        showNotification("Недостаточно BOONT!", 'error');
+        return false;
     }
 
-    state.balance -= betAmount;
-    state.userBets.push({
+    state.balance -= amount;
+    state.bets.push({
         id: Date.now(),
-        predictionId,
-        optionId,
-        amount: betAmount,
-        odds,
+        amount,
+        prediction,
+        option,
         date: new Date().toISOString(),
         status: 'active'
     });
 
-    await saveData();
-    updateUI();
-    tg.showAlert(`Ставка ${betAmount} BOONT принята!`);
-    tg.HapticFeedback.notificationOccurred('success');
+    await saveUserData();
+    updateBalanceDisplay();
+    showNotification(`Ставка ${amount} BOONT принята!`, 'success');
+    return true;
 }
 
 async function checkDailyBonus() {
     const today = new Date().toDateString();
     
-    if (state.lastBonusDate !== today) {
+    if (!state.lastBonusDate || state.lastBonusDate !== today) {
         state.balance += 1000;
         state.lastBonusDate = today;
-        await saveData();
-        updateUI();
-        
-        tg.showAlert(`🎉 Ежедневный бонус 1000 BOONT!`);
-        tg.HapticFeedback.notificationOccurred('success');
+        await saveUserData();
+        updateBalanceDisplay();
+        showNotification("🎉 Ежедневный бонус 1000 BOONT!", 'success');
     }
 }
 
 // ======================
-// Вспомогательные функции
+// Работа с интерфейсом
 // ======================
 
-function updateUI() {
-    // Обновляем баланс
-    document.querySelector('.balance').textContent = state.balance.toLocaleString();
+function updateBalanceDisplay() {
+    const balanceEl = document.querySelector('.balance');
+    if (balanceEl) balanceEl.textContent = state.balance.toLocaleString();
+}
+
+function showNotification(text, type = 'info') {
+    const notification = document.getElementById('notification');
+    if (!notification) return;
     
-    // Обновляем историю ставок (если есть такой раздел)
-    if (document.getElementById('history-list')) {
-        renderHistory();
-    }
+    notification.textContent = text;
+    notification.className = 'notification ' + type;
+    notification.classList.add('show');
+    
+    setTimeout(() => {
+        notification.classList.remove('show');
+    }, 3000);
 }
 
-function renderPredictions() {
-    const container = document.querySelector('.predictions-list');
-    container.innerHTML = getPredictions().map(prediction => `
-        <div class="prediction-card">
-            <!-- Ваш существующий HTML для карточки прогноза -->
-            <div class="options-container">
-                ${prediction.options.map(option => `
-                    <button class="option-btn" 
-                            data-prediction="${prediction.id}" 
-                            data-option="${option.id}"
-                            data-odds="${option.odds}">
-                        <div class="option-text">${option.text}</div>
-                        <div class="option-odds">${option.odds}x</div>
-                    </button>
-                `).join('')}
-            </div>
-        </div>
-    `).join('');
+function renderUI() {
+    updateBalanceDisplay();
+    // Другие функции рендеринга...
 }
-
-function renderHistory() {
-    const container = document.getElementById('history-list');
-    container.innerHTML = state.userBets.map(bet => `
-        <div class="bet-item">
-            <div>Ставка: ${bet.amount} BOONT</div>
-            <div>Коэффициент: ${bet.odds}x</div>
-            <div>Статус: ${bet.status === 'win' ? '✅ Выигрыш' : 
-                         bet.status === 'lose' ? '❌ Проигрыш' : '🔄 В процессе'}</div>
-        </div>
-    `).join('');
-}
-
-// ======================
-// Обработчики событий
-// ======================
 
 function setupEventListeners() {
-    // Обработчик ставок
-    document.addEventListener('click', async (e) => {
-        if (e.target.closest('.option-btn')) {
-            const btn = e.target.closest('.option-btn');
-            const predictionId = btn.dataset.prediction;
-            const optionId = btn.dataset.option;
-            const odds = parseFloat(btn.dataset.odds);
-            
-            tg.showPopup({
-                title: "Подтверждение ставки",
-                message: `Ставить 100 BOONT (коэф. ${odds}x)?`,
-                buttons: [
-                    { type: "default", text: "Подтвердить", id: "confirm" },
-                    { type: "cancel" }
-                ]
-            }, async (btnId) => {
-                if (btnId === 'confirm') {
-                    await placeBet(predictionId, optionId, odds);
-                }
-            });
-        }
-    });
+    // Обработчик кнопки бонуса
+    document.getElementById('bonus-btn')?.addEventListener('click', checkDailyBonus);
+    
+    // Обработчики ставок...
 }
+
+// Обработчик закрытия приложения
+tg.onEvent('viewportChanged', async (e) => {
+    if (e.isStateStable && !tg.isExpanded) {
+        await saveUserData();
+    }
+});
 
 // Запуск приложения
 document.addEventListener('DOMContentLoaded', init);
