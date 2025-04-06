@@ -1,71 +1,189 @@
 :root {
-  --primary-dark: #2E4F4F;    /* Тёмный зелено-серый */
-  --primary-medium: #3A5F5F;  /* Средний зелено-серый */
-  --primary-light: #CBE4DE;   /* Светлый зелено-серый */
-  --accent: #0E8388;         /* Акцентный бирюзовый */
-  --background: #F5F5F5;     /* Фон */
-  --text-dark: #2C3333;      /* Текст */
-  --currency-color: #4CAF50; /* Цвет валюты BOONT */
+    --primary-color: #4CAF50; /* Зеленый BOONT */
+    --secondary-color: #2E4F4F; /* Темно-зеленый */
+    --accent-color: #FF9800; /* Оранжевый */
+    --text-color: #E0E0E0;
+    --bg-color: #121212;
+    --card-bg: #1E1E1E;
 }
 
-/* Базовые стили */
 body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  padding: 0;
-  background: var(--background);
-  color: var(--text-dark);
-  min-height: 100vh;
+    font-family: 'Rajdhani', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
 }
 
-/* Шапка приложения */
-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 15px;
-  background: var(--primary-dark);
-  color: white;
-  border-radius: 8px 8px 0 0;
-  margin-bottom: 15px;
+.app-container {
+    max-width: 100%;
+    padding: 12px;
 }
 
-/* Баланс и кнопка бонуса */
-#user-balance {
-  background: var(--currency-color);
-  padding: 5px 15px;
-  border-radius: 20px;
-  font-weight: bold;
+.app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 0;
+    position: relative;
 }
 
-#bonus-button {
-  background: var(--accent);
-  color: white;
-  border: none;
-  padding: 8px 15px;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: transform 0.2s;
+.logo-container {
+    display: flex;
+    align-items: center;
 }
 
-#bonus-button:hover {
-  transform: translateY(-2px);
+.logo {
+    height: 32px;
+    width: auto;
 }
 
-/* Карточки матчей */
-.match-card {
-  background: white;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 15px;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  border-left: 4px solid var(--accent);
+.balance-container {
+    background-color: var(--card-bg);
+    padding: 8px 16px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    border: 1px solid var(--primary-color);
 }
 
-/* Адаптив для мобильных */
-@media (max-width: 600px) {
-  header {
+.balance {
+    font-weight: 700;
+    font-size: 18px;
+    color: var(--primary-color);
+}
+
+.currency {
+    margin-left: 4px;
+    font-size: 14px;
+    color: var(--accent-color);
+    font-weight: bold;
+}
+
+.tabs {
+    display: flex;
+    gap: 8px;
+    margin: 16px 0;
+    overflow-x: auto;
+    padding-bottom: 8px;
+}
+
+.tab {
+    background: var(--card-bg);
+    border: 1px solid var(--secondary-color);
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 14px;
+    color: var(--text-color);
+    white-space: nowrap;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tab.active {
+    background: var(--primary-color);
+    color: #000;
+    border-color: var(--primary-color);
+    font-weight: bold;
+}
+
+.predictions-list {
+    display: flex;
     flex-direction: column;
-    gap: 10px;
-  }
+    gap: 12px;
+}
+
+.prediction-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid var(--secondary-color);
+}
+
+.prediction-title {
+    font-weight: 600;
+    margin-bottom: 12px;
+    font-size: 15px;
+    color: var(--primary-color);
+}
+
+.match-teams {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.team {
+    display: flex;
+    align-items: center;
+    width: 40%;
+}
+
+.team-logo {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+.vs {
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.options-container {
+    display: flex;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.option-btn {
+    flex: 1;
+    background: var(--secondary-color);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.option-btn:hover {
+    background: var(--primary-color);
+    color: #000;
+}
+
+.option-text {
+    font-size: 12px;
+    margin-bottom: 4px;
+}
+
+.option-odds {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--accent-color);
+}
+
+.prediction-footer {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #95a5a6;
+}
+
+/* Анимации */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+    100% { transform: scale(1); }
+}
+
+.live-badge {
+    background: #F44336;
+    color: white;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 10px;
+    animation: pulse 2s infinite;
 }
