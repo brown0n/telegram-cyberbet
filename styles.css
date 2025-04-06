@@ -2,11 +2,11 @@
     --primary-green: #4CAF50;
     --dark-green: #2E4F4F;
     --light-green: #8BC34A;
-    --gray-bg: #F5F5F5;
-    --card-bg: #FFFFFF;
+    --gray-bg: #f5f5f5;
+    --card-bg: #ffffff;
     --text-dark: #333333;
     --text-light: #777777;
-    --border-color: #E0E0E0;
+    --border-color: #e0e0e0;
 }
 
 body {
@@ -19,132 +19,109 @@ body {
 
 .app-container {
     max-width: 100%;
-    padding: 20px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-.balance-section {
+.app-header {
+    background-color: var(--dark-green);
+    color: white;
+    padding: 15px 20px;
     text-align: center;
-    margin-bottom: 20px;
 }
 
-.balance-section h1 {
-    font-size: 48px;
-    color: var(--dark-green);
+.app-header h1 {
     margin: 0;
+    font-size: 20px;
 }
 
-.balance-section h2 {
-    font-size: 24px;
-    color: var(--primary-green);
-    margin: 5px 0 15px;
+.balance {
+    margin-top: 5px;
+    font-size: 16px;
+    color: var(--light-green);
 }
 
-.subscription-text {
+.tabs-container {
+    display: flex;
+    background-color: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    overflow-x: auto;
+    padding: 0 10px;
+}
+
+.tab {
+    flex: 1;
+    min-width: max-content;
+    padding: 12px 15px;
+    border: none;
+    background: none;
     color: var(--text-light);
-    margin-bottom: 10px;
+    font-weight: 500;
+    font-size: 14px;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3s;
 }
 
-.subscribe-btn {
+.tab.active {
+    color: var(--primary-green);
+    font-weight: 700;
+}
+
+.tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: var(--primary-green);
+}
+
+.content-area {
+    flex: 1;
+    padding: 20px;
+    background-color: var(--card-bg);
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+.bottom-menu {
+    padding: 15px 20px;
+    background-color: var(--card-bg);
+    border-top: 1px solid var(--border-color);
+}
+
+.deposit-btn {
+    width: 100%;
+    padding: 12px;
     background-color: var(--primary-green);
     color: white;
     border: none;
-    border-radius: 20px;
-    padding: 10px 25px;
-    font-size: 16px;
+    border-radius: 8px;
     font-weight: 500;
+    font-size: 16px;
     cursor: pointer;
-    width: 100%;
-    max-width: 200px;
+    transition: background-color 0.3s;
 }
 
-.divider {
-    height: 1px;
-    background-color: var(--border-color);
-    margin: 20px 0;
+.deposit-btn:hover {
+    background-color: var(--dark-green);
 }
 
-.tournament-section {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.tournament-section h3 {
-    color: var(--dark-green);
-    margin-bottom: 10px;
-}
-
-.tournament-code {
-    font-size: 18px;
-    color: var(--primary-green);
-    font-weight: 700;
-    margin: 5px 0;
-}
-
-.tournament-desc {
-    color: var(--text-light);
-    font-size: 14px;
-}
-
-.matches-section {
-    background-color: var(--card-bg);
-    border-radius: 12px;
-    padding: 15px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-}
-
-.matches-section h3 {
+/* Стили для контента */
+h2 {
     color: var(--dark-green);
     margin-top: 0;
-    margin-bottom: 15px;
 }
 
-.tournament-header h4 {
-    color: var(--primary-green);
-    margin: 0 0 10px 0;
-}
-
-.match-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.match-item {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.team-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.match-time {
+p {
     color: var(--text-light);
-    font-size: 12px;
-    text-align: center;
-    margin: 5px 0;
-}
-
-.odds {
-    color: var(--primary-green);
-    font-weight: 700;
-}
-
-.other-teams {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.team-odds {
-    background-color: var(--gray-bg);
-    border-radius: 8px;
-    padding: 8px 12px;
-    display: flex;
-    justify-content: space-between;
-    min-width: 120px;
 }
