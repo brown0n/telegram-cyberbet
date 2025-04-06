@@ -1,23 +1,33 @@
 :root {
-    --primary-color: #4CAF50; /* Зеленый BOONT */
-    --secondary-color: #2E4F4F; /* Темно-зеленый */
-    --accent-color: #FF9800; /* Оранжевый */
-    --text-color: #E0E0E0;
+    --primary-color: #4CAF50;
+    --primary-dark: #2E4F4F;
+    --primary-light: #8BC34A;
+    --accent-color: #FF9800;
+    --danger-color: #F44336;
     --bg-color: #121212;
     --card-bg: #1E1E1E;
+    --text-primary: #E0E0E0;
+    --text-secondary: #9E9E9E;
+    --border-color: #424242;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
     font-family: 'Rajdhani', sans-serif;
-    margin: 0;
-    padding: 0;
     background-color: var(--bg-color);
-    color: var(--text-color);
+    color: var(--text-primary);
+    line-height: 1.6;
+    padding-bottom: 20px;
 }
 
 .app-container {
     max-width: 100%;
-    padding: 12px;
+    padding: 0 12px;
 }
 
 .app-header {
@@ -26,11 +36,13 @@ body {
     align-items: center;
     padding: 15px 0;
     position: relative;
+    margin-bottom: 10px;
 }
 
 .logo-container {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
 
 .logo {
@@ -38,53 +50,97 @@ body {
     width: auto;
 }
 
+.app-name {
+    font-weight: 700;
+    font-size: 20px;
+    color: var(--primary-color);
+    letter-spacing: 1px;
+}
+
 .balance-container {
-    background-color: var(--card-bg);
-    padding: 8px 16px;
-    border-radius: 20px;
     display: flex;
     align-items: center;
-    border: 1px solid var(--primary-color);
+    gap: 8px;
+    background-color: var(--card-bg);
+    padding: 8px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--primary-dark);
 }
 
 .balance {
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     color: var(--primary-color);
 }
 
 .currency {
-    margin-left: 4px;
     font-size: 14px;
+    font-weight: 600;
     color: var(--accent-color);
-    font-weight: bold;
+}
+
+.bonus-btn {
+    background: var(--primary-dark);
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.bonus-btn:hover {
+    transform: scale(1.1);
+}
+
+.tabs-container {
+    margin: 15px 0;
+    position: relative;
 }
 
 .tabs {
     display: flex;
-    gap: 8px;
-    margin: 16px 0;
+    gap: 5px;
     overflow-x: auto;
-    padding-bottom: 8px;
+    padding-bottom: 5px;
+    scrollbar-width: none;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none;
 }
 
 .tab {
     background: var(--card-bg);
-    border: 1px solid var(--secondary-color);
+    border: 1px solid var(--border-color);
     border-radius: 20px;
     padding: 8px 16px;
     font-size: 14px;
-    color: var(--text-color);
+    font-weight: 500;
+    color: var(--text-primary);
     white-space: nowrap;
     cursor: pointer;
     transition: all 0.2s;
+    flex-shrink: 0;
 }
 
 .tab.active {
     background: var(--primary-color);
     color: #000;
     border-color: var(--primary-color);
-    font-weight: bold;
+    font-weight: 600;
+}
+
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
 }
 
 .predictions-list {
@@ -97,21 +153,32 @@ body {
     background: var(--card-bg);
     border-radius: 12px;
     padding: 16px;
-    border: 1px solid var(--secondary-color);
+    border: 1px solid var(--border-color);
+}
+
+.prediction-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
 .prediction-title {
     font-weight: 600;
-    margin-bottom: 12px;
-    font-size: 15px;
+    font-size: 16px;
     color: var(--primary-color);
+}
+
+.prediction-date {
+    font-size: 12px;
+    color: var(--text-secondary);
 }
 
 .match-teams {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 12px;
+    margin: 15px 0;
 }
 
 .team {
@@ -120,26 +187,40 @@ body {
     width: 40%;
 }
 
+.team-name {
+    font-weight: 500;
+    font-size: 14px;
+}
+
 .team-logo {
     width: 24px;
     height: 24px;
-    margin-right: 8px;
+    margin: 0 8px;
+}
+
+.team.left {
+    justify-content: flex-start;
+}
+
+.team.right {
+    justify-content: flex-end;
 }
 
 .vs {
-    font-weight: bold;
+    font-weight: 700;
     color: var(--accent-color);
+    font-size: 14px;
 }
 
 .options-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     gap: 8px;
     margin-top: 12px;
 }
 
 .option-btn {
-    flex: 1;
-    background: var(--secondary-color);
+    background: var(--primary-dark);
     border: none;
     border-radius: 8px;
     padding: 10px;
@@ -149,8 +230,7 @@ body {
 }
 
 .option-btn:hover {
-    background: var(--primary-color);
-    color: #000;
+    transform: translateY(-2px);
 }
 
 .option-text {
@@ -164,26 +244,98 @@ body {
     color: var(--accent-color);
 }
 
-.prediction-footer {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 12px;
-    font-size: 12px;
-    color: #95a5a6;
-}
-
-/* Анимации */
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
 .live-badge {
-    background: #F44336;
+    background: var(--danger-color);
     color: white;
-    padding: 2px 6px;
+    padding: 2px 8px;
     border-radius: 4px;
     font-size: 10px;
+    font-weight: 700;
     animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.6; }
+    100% { opacity: 1; }
+}
+
+.history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.bet-item {
+    background: var(--card-bg);
+    border-radius: 8px;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.bet-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.bet-amount {
+    font-weight: 600;
+    color: var(--primary-color);
+}
+
+.bet-date {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.bet-details {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+
+.bet-status {
+    font-weight: 600;
+}
+
+.bet-status.win {
+    color: var(--primary-color);
+}
+
+.bet-status.lose {
+    color: var(--danger-color);
+}
+
+.bet-status.pending {
+    color: var(--accent-color);
+}
+
+.notification {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-dark);
+    color: white;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    opacity: 0;
+    transition: opacity 0.3s;
+    z-index: 100;
+}
+
+.notification.show {
+    opacity: 1;
+}
+
+@media (max-width: 480px) {
+    .options-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .team-name {
+        font-size: 12px;
+    }
 }
