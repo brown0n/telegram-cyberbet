@@ -1,80 +1,133 @@
 const tg = window.Telegram.WebApp;
 tg.expand();
+tg.setHeaderColor('#2E4F4F');
+tg.setBackgroundColor('#121212');
 
 // Состояние приложения
 const state = {
     balance: 2000,
     currency: "BOONT",
-    lastBonusDate: null,
-    activeSection: 'live',
-    matches: {
-        live: [
+    activeTab: 'tournaments',
+    predictions: {
+        tournaments: [
             {
                 id: 1,
-                team1: "Natus Vincere",
-                team2: "Team Spirit",
-                odds1: 1.8,
-                odds2: 2.0,
-                time: "Live"
+                title: "BLAST Premier World Final 2023",
+                teams: [
+                    { name: "NAVI", logo: "assets/teams/navi.png" },
+                    { name: "Vitality", logo: "assets/teams/vitality.png" }
+                ],
+                options: [
+                    { id: 1, text: "NAVI победа", odds: 2.1 },
+                    { id: 2, text: "Vitality победа", odds: 1.8 }
+                ],
+                date: "Сегодня, 20:00",
+                isLive: true
             }
         ],
-        upcoming: []
-    },
-    userBets: []
+        matches: [
+            // Другие матчи
+        ]
+    }
 };
 
-// Проверка и выдача ежедневного бонуса
-function checkDailyBonus() {
-    const today = new Date().toDateString();
-    
-    if (state.lastBonusDate !== today) {
-        state.balance += 1000;
-        state.lastBonusDate = today;
-        updateBalance();
-        
-        tg.showAlert(`🎉 Вы получили ежедневный бонус 1000 ${state.currency}!`);
-        saveToLocalStorage();
-    }
-}
-
-// Сохранение в localStorage
-function saveToLocalStorage() {
-    localStorage.setItem('boontData', JSON.stringify({
-        balance: state.balance,
-        lastBonusDate: state.lastBonusDate
-    }));
-}
-
-// Загрузка из localStorage
-function loadFromLocalStorage() {
-    const data = localStorage.getItem('boontData');
-    if (data) {
-        const parsed = JSON.parse(data);
-        state.balance = parsed.balance || 2000;
-        state.lastBonusDate = parsed.lastBonusDate;
-    }
-}
-
-// Обновление отображения баланса
-function updateBalance() {
-    document.getElementById('user-balance').textContent = 
-        `Баланс: ${state.balance} ${state.currency}`;
-}
-
-// Инициализация приложения
 function init() {
-    loadFromLocalStorage();
     updateBalance();
-    checkDailyBonus(); // Проверяем бонус при запуске
-    loadMatches();
-    setupNavigation();
-    
-    // Добавляем кнопку бонуса (для теста)
-    const bonusBtn = document.createElement('button');
-    bonusBtn.textContent = `🎁 Получить бонус`;
-    bonusBtn.style.margin = '10px';
-    bonusBtn.onclick = checkDailyBonus;
-    document.body.prepend(bonusBtn);
+    renderPredictions();
+    setupEventListeners();
 }
 
-// Остальные функции (placeBet, loadMatches и т.д.) остаются без изменений
+function updateBalance() {
+    document.querySelector('.balance').textContent = state.balance.toLocaleString();
+    document.querySelector('.currency').textContent = state.currency;
+}
+
+function renderPredictions() {
+    const container = document.querySelector('.predictions-list');
+    const predictions = state.predictions[state.activeTab];
+    
+    container.innerHTML = predictions.map(prediction => `
+        <div class="prediction-card">
+            <div class="prediction-title">
+                ${prediction.title}
+                ${prediction.isLive ? '<span class="live-badge">LIVE</span>' : ''}
+            </div>
+            
+            <div class="match-teams">
+                <div class="team">
+                    <img src="${prediction.teams[0].logo}" alt="${prediction.teams[0].name}" class="team-logo">
+                    <span>${prediction.teams[0].name}</span>
+                </div>
+                
+                <span class="vs">VS</span>
+                
+                <div class="team" style="justify-content: flex-end;">
+                    <span>${prediction.teams[1].name}</span>
+                    <img src="${prediction.teams[1].logo}" alt="${prediction.teams[1].name}" class="team-logo">
+                </div>
+            </div>
+            
+            <div class="options-container">
+                ${prediction.options.map(option => `
+                    <button class="option-btn" 
+                            data-prediction="${prediction.id}" 
+                            data-option="${option.id}">
+                        <div class="option-text">${option.text}</div>
+                        <div class="option-odds">${option.odds}x</div>
+                    </button>
+                `).join('')}
+            </div>
+            
+            <div class="prediction-footer">
+                <span>CS2 • ${prediction.date}</span>
+                <span>BOONT</span>
+            </div>
+        </div>
+    `).join('');
+}
+
+function setupEventListeners() {
+    // Переключение табов
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+            document.querySelector('.tab.active').classList.remove('active');
+            tab.classList.add('active');
+            state.activeTab = tab.textContent === 'Турниры' ? 'tournaments' : 
+                            tab.textContent === 'Матчи' ? 'matches' : 'stats';
+            renderPredictions();
+        });
+    });
+
+    // Обработка ставок
+    document.addEventListener('click', (e) => {
+        if (e.target.closest('.option-btn')) {
+            const btn = e.target.closest('.option-btn');
+            const predictionId = btn.dataset.prediction;
+            const optionId = btn.dataset.option;
+            
+            tg.showPopup({
+                title: "Подтверждение ставки",
+                message: `Вы уверены, что хотите сделать ставку 100 BOONT?`,
+                buttons: [
+                    { type: "default", text: "Подтвердить", id: "confirm" },
+                    { type: "cancel", id: "cancel" }
+                ]
+            }, (btnId) => {
+                if (btnId === 'confirm') {
+                    placeBet(predictionId, optionId);
+                }
+            });
+        }
+    });
+}
+
+function placeBet(predictionId, optionId) {
+    // В реальном приложении здесь будет запрос к API
+    state.balance -= 100;
+    updateBalance();
+    
+    tg.showAlert("Ставка 100 BOONT принята!");
+    tg.HapticFeedback.impactOccurred('medium');
+}
+
+document.addEventListener('DOMContentLoaded', init);
