@@ -133,3 +133,24 @@ nav button.active {
     flex-direction: column;
   }
 }
+/* Стиль для кнопки бонуса */
+#bonus-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    margin: 10px 0;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: all 0.3s;
+}
+
+#bonus-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+#bonus-button:active {
+    transform: translateY(0);
+}
