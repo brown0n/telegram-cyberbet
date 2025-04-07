@@ -3,68 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CS2NEWS - Предиктор</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>BOONT CS2 Betting</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
+    <button id="menu-toggle" class="hamburger-menu">&#9776;</button>
+
     <div class="sidebar">
-        <div class="logo">
-            <img src="logo.png" alt="CS2 Predictor">
-        </div>
-        <nav class="menu">
-            <button class="menu-item active">Главная</button>
-            <button class="menu-item">Мои ставки</button>
-            <button class="menu-item">Статистика</button>
-            <button class="menu-item">Рейтинг</button>
-            <button class="menu-item">Рефералка</button>
-            <button class="menu-item">Пополнить баланс</button>
-            <button class="menu-item">FAQ</button>
+        <nav>
+            <ul>
+                <li><a href="#">Главная</a></li>
+                <li><a href="#">Ставки</a></li>
+                <li><a href="#">Статистика</a></li>
+            </ul>
         </nav>
-        <div class="footer">
-            <span>@snews_predictor_bot</span>
-        </div>
     </div>
-    
-    <div class="content">
+
+    <div class="main-content">
         <header class="app-header">
-            <h1>CS2NEWS</h1>
+            <h1>BOONT</h1>
+            <div class="user-info">
+                <span class="balance">2 000</span>
+                <span class="currency">BOONT</span>
+            </div>
         </header>
-        <main class="main-content">
-            <h2>Главная</h2>
-            <p>Добро пожаловать в предиктор ставок CS2!</p>
+
+        <main class="content">
+            <h2>Добро пожаловать в BOONT CS2 Betting</h2>
+            <p>Выберите раздел в меню слева.</p>
         </main>
     </div>
 
     <script src="app.js"></script>
-</body>
-    <body>
-    <div class="sidebar">
-        <button class="toggle-button">☰</button>
-        <ul class="nav-menu">
-            <li><a href="#">Главная</a></li>
-            <li><a href="#">Матчи</a></li>
-            <li><a href="#">Ставки</a></li>
-            <li><a href="#">Профиль</a></li>
-        </ul>
-    </div>
-
-    <div class="main-content">
-        <h1>Список матчей</h1>
-        <div class="match-card">
-            <div class="match-teams">
-                <span>Team A</span> <span>vs</span> <span>Team B</span>
-            </div>
-            <div class="match-info">
-                <span>Начало: 18:00</span>
-                <span>Коэффициенты</span>
-            </div>
-            <div class="match-odds">
-                <span class="odd">1.75</span>
-                <span class="odd">2.10</span>
-            </div>
-        </div>
-    </div>
 </body>
 </html>
