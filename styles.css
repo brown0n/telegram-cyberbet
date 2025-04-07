@@ -128,6 +128,7 @@ body {
     color: rgba(255, 255, 255, 0.8);
 }
 
+/* Стили для матчей */
 .match-card {
     background-color: white;
     border-radius: 8px;
@@ -191,6 +192,32 @@ body {
     padding: 5px 10px;
     border-radius: 15px;
     font-size: 14px;
+}
+
+/* Стили для ставок */
+.bet-controls {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#bet-amount {
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 16px;
+}
+
+#place-bet-button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
 }
 
 /* Modal styles */
@@ -269,31 +296,6 @@ body {
 
 .bet-option.selected .option-odds {
     color: white;
-}
-
-.bet-controls {
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-}
-
-#bet-amount {
-    padding: 12px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 16px;
-}
-
-#place-bet-button {
-    background-color: var(--primary-color);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 12px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
 }
 
 /* Bets list */
