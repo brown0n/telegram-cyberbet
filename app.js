@@ -9,9 +9,9 @@ const state = {
     lastBonusDate: null,
     currentTournament: {
         id: 1,
-        name: "BLAST Premier Fall Groups 2024",
-        dates: "15-21 июля 2024",
-        prize: "$177,498"
+        name: "PGL Bucharest 2025",
+        dates: "Apr 6th - Apr 13th 2025",
+        prize: "$1.250.000"
     },
     matches: [
         {
