@@ -374,7 +374,8 @@ async function placeBetHandler() {
 }
 
 // Initialize the app
-    document.addEventListener("DOMContentLoaded", function () {
+});
+document.addEventListener("DOMContentLoaded", function () {
     const sidebar = document.querySelector(".sidebar");
     const toggleButton = document.createElement("button");
     toggleButton.classList.add("toggle-button");
