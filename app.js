@@ -1,15 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const sidebar = document.querySelector(".sidebar");
-    const toggleButton = document.createElement("button");
-    toggleButton.classList.add("toggle-button");
-    toggleButton.textContent = "☰";
-    sidebar.appendChild(toggleButton);
 
-    toggleButton.addEventListener("click", function () {
-        sidebar.classList.toggle("active");
-        document.querySelector(".main-content").classList.toggle("sidebar-open");
-    });
-});
 const tg = window.Telegram.WebApp;
 const USER_DATA_KEY = 'boont_user_data';
 
@@ -385,6 +374,17 @@ async function placeBetHandler() {
 }
 
 // Initialize the app
-document.addEventListener('DOMContentLoaded', () => {
-    init();
+    document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.querySelector(".sidebar");
+    const toggleButton = document.createElement("button");
+    toggleButton.classList.add("toggle-button");
+    toggleButton.textContent = "☰";
+    sidebar.appendChild(toggleButton);
+
+    toggleButton.addEventListener("click", function () {
+        sidebar.classList.toggle("active");
+        document.querySelector(".main-content").classList.toggle("sidebar-open");
+    });
+});
+
 });
