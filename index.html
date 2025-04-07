@@ -3,157 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOONT CS2 Betting</title>
+    <title>CS2NEWS - Предиктор</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 <body>
-    <div class="app-container">
-        <header class="app-header">
-            <h1>BOONT</h1>
-            <div class="user-info">
-                <span class="balance">2 000</span>
-                <span class="currency">BOONT</span>
-            </div>
-        </header>
-
-        <nav class="tabs">
-            <button class="tab active" data-tab="tournament">Турнир</button>
-            <button class="tab" data-tab="bets">Мои ставки</button>
-            <button class="tab" data-tab="stats">Статистика</button>
+    <div class="sidebar">
+        <div class="logo">
+            <img src="logo.png" alt="CS2 Predictor">
+        </div>
+        <nav class="menu">
+            <button class="menu-item active">Главная</button>
+            <button class="menu-item">Мои ставки</button>
+            <button class="menu-item">Статистика</button>
+            <button class="menu-item">Рейтинг</button>
+            <button class="menu-item">Рефералка</button>
+            <button class="menu-item">Пополнить баланс</button>
+            <button class="menu-item">FAQ</button>
         </nav>
-
-        <main class="content">
-            <div class="tab-content active" id="tournament-content">
-                <div class="current-tournament">
-                    <h2>BLAST Premier Fall Groups 2024</h2>
-                    <p class="tournament-dates">15-21 июля 2024</p>
-                    <p class="tournament-prize">Призовой фонд: $177,498</p>
-                </div>
-
-                <div class="matches-list" id="matches-list">
-                    <!-- Matches will be loaded here -->
-                </div>
-            </div>
-
-            <div class="tab-content" id="bets-content">
-                <h2>Мои ставки</h2>
-                <div class="bets-list" id="bets-list">
-                    <!-- Bets will be shown here -->
-                </div>
-            </div>
-
-            <div class="tab-content" id="stats-content">
-                <h2>Статистика</h2>
-                <div class="stats-container">
-                    <div class="stat-item">
-                        <span>Всего ставок:</span>
-                        <span id="total-bets">0</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Выиграно:</span>
-                        <span id="won-bets">0 BOONT</span>
-                    </div>
-                    <div class="stat-item">
-                        <span>Процент успеха:</span>
-                        <span id="success-rate">0%</span>
-                    </div>
-                </div>
-            </div>
-        </main>
-
-        <div class="match-details-modal" id="match-modal">
-            <div class="modal-content">
-                <button class="close-modal">&times;</button>
-                <h3 id="modal-match-title"></h3>
-                <div class="teams-container" id="modal-teams">
-                    <!-- Teams will be shown here -->
-                </div>
-                <div class="bet-options">
-                    <h4>Основные ставки</h4>
-                    <div class="options-grid" id="main-bets">
-                        <!-- Main bets will be shown here -->
-                    </div>
-                    <h4>Ставки на фору</h4>
-                    <div class="options-grid" id="handicap-bets">
-                        <!-- Handicap bets will be shown here -->
-                    </div>
-                </div>
-                <div class="bet-controls">
-                    <input type="number" id="bet-amount" min="10" max="1000" value="100" placeholder="Сумма ставки">
-                    <button id="place-bet-button">Сделать ставку</button>
-                </div>
-            </div>
+        <div class="footer">
+            <span>@snews_predictor_bot</span>
         </div>
     </div>
-
-    <script>
-        const API_KEY = "a15f716d0a5fd971ce57ea00be55506f";  // Замените на ваш ключ API
-        const API_URL = `https://api.oddspedia.com/v1/odds?api_token=${API_KEY}&sport=csgo`;
-
-        let matches = []; // Массив для матчей
-
-        // Функция для получения матчей с API
-        async function fetchMatches() {
-            try {
-                const response = await fetch(API_URL);
-                const data = await response.json();
-
-                if (!data || !data.data) {
-                    console.error("Ошибка получения данных от API");
-                    return;
-                }
-
-                const liveMatches = data.data.filter(match => match.status === 'live' || match.status === 'future');
-
-                matches = liveMatches.map(match => ({
-                    id: match.id,
-                    team1: match.teams[0].name,
-                    team2: match.teams[1].name,
-                    time: new Date(match.start_date * 1000).toLocaleString(),
-                    odds1: match.odds[0].value,
-                    odds2: match.odds[1].value
-                }));
-
-                renderMatches();  // Отображаем матчи на странице
-            } catch (error) {
-                console.error("Ошибка загрузки коэффициентов:", error);
-            }
-        }
-
-        // Функция для отображения матчей на странице
-        function renderMatches() {
-            const container = document.getElementById("matches-list");
-            container.innerHTML = "";
-
-            matches.forEach(match => {
-                const matchElement = document.createElement("div");
-                matchElement.className = "match-card";
-                matchElement.innerHTML = `
-                    <p class="team">${match.team1} vs ${match.team2}</p>
-                    <p>Время: ${match.time}</p>
-                    <button class="odds-btn" onclick="placeBet('${match.team1}', ${match.odds1})">
-                        ${match.team1} (${match.odds1})
-                    </button>
-                    <button class="odds-btn" onclick="placeBet('${match.team2}', ${match.odds2})">
-                        ${match.team2} (${match.odds2})
-                    </button>
-                `;
-                container.appendChild(matchElement);
-            });
-        }
-
-        // Функция для обработки ставки
-        function placeBet(team, odds) {
-            alert(`Вы сделали ставку на ${team} с коэффициентом ${odds}`);
-        }
-
-        // Инициализация
-        fetchMatches();
-        setInterval(fetchMatches, 30000);  // Обновляем данные о матчах каждые 30 секунд
-
-    </script>
+    
+    <div class="content">
+        <header class="app-header">
+            <h1>CS2NEWS</h1>
+        </header>
+        <main class="main-content">
+            <h2>Главная</h2>
+            <p>Добро пожаловать в предиктор ставок CS2!</p>
+        </main>
+    </div>
 
     <script src="app.js"></script>
 </body>
