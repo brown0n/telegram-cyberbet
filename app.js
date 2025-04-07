@@ -385,6 +385,11 @@ document.addEventListener("DOMContentLoaded", function () {
     toggleButton.addEventListener("click", function () {
         sidebar.classList.toggle("active");
         document.querySelector(".main-content").classList.toggle("sidebar-open");
+        document.getElementById("menu-toggle").addEventListener("click", function () {
+    document.querySelector(".sidebar").classList.toggle("open");
+    document.querySelector(".main-content").classList.toggle("open");
+});
+
     });
 });
 
