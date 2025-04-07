@@ -11,7 +11,6 @@
 <body>
     <div class="app-container">
         <header class="app-header">
-            <img src="i (10)-Photoroom" alt="$">
             <h1>BOONT</h1>
             <div class="user-info">
                 <span class="balance">2 000</span>
@@ -28,9 +27,9 @@
         <main class="content">
             <div class="tab-content active" id="tournament-content">
                 <div class="current-tournament">
-                    <h2>PGL Bucharest 2025</h2>
-                    <p class="tournament-dates">Apr 6th - Apr 13th 2025</p>
-                    <p class="tournament-prize">Призовой фонд: $1.250.000</p>
+                    <h2>BLAST Premier Fall Groups 2024</h2>
+                    <p class="tournament-dates">15-21 июля 2024</p>
+                    <p class="tournament-prize">Призовой фонд: $177,498</p>
                 </div>
 
                 <div class="matches-list" id="matches-list">
@@ -88,6 +87,73 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const API_KEY = "a15f716d0a5fd971ce57ea00be55506f";  // Замените на ваш ключ API
+        const API_URL = `https://api.oddspedia.com/v1/odds?api_token=${API_KEY}&sport=csgo`;
+
+        let matches = []; // Массив для матчей
+
+        // Функция для получения матчей с API
+        async function fetchMatches() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                if (!data || !data.data) {
+                    console.error("Ошибка получения данных от API");
+                    return;
+                }
+
+                const liveMatches = data.data.filter(match => match.status === 'live' || match.status === 'future');
+
+                matches = liveMatches.map(match => ({
+                    id: match.id,
+                    team1: match.teams[0].name,
+                    team2: match.teams[1].name,
+                    time: new Date(match.start_date * 1000).toLocaleString(),
+                    odds1: match.odds[0].value,
+                    odds2: match.odds[1].value
+                }));
+
+                renderMatches();  // Отображаем матчи на странице
+            } catch (error) {
+                console.error("Ошибка загрузки коэффициентов:", error);
+            }
+        }
+
+        // Функция для отображения матчей на странице
+        function renderMatches() {
+            const container = document.getElementById("matches-list");
+            container.innerHTML = "";
+
+            matches.forEach(match => {
+                const matchElement = document.createElement("div");
+                matchElement.className = "match-card";
+                matchElement.innerHTML = `
+                    <p class="team">${match.team1} vs ${match.team2}</p>
+                    <p>Время: ${match.time}</p>
+                    <button class="odds-btn" onclick="placeBet('${match.team1}', ${match.odds1})">
+                        ${match.team1} (${match.odds1})
+                    </button>
+                    <button class="odds-btn" onclick="placeBet('${match.team2}', ${match.odds2})">
+                        ${match.team2} (${match.odds2})
+                    </button>
+                `;
+                container.appendChild(matchElement);
+            });
+        }
+
+        // Функция для обработки ставки
+        function placeBet(team, odds) {
+            alert(`Вы сделали ставку на ${team} с коэффициентом ${odds}`);
+        }
+
+        // Инициализация
+        fetchMatches();
+        setInterval(fetchMatches, 30000);  // Обновляем данные о матчах каждые 30 секунд
+
+    </script>
 
     <script src="app.js"></script>
 </body>
