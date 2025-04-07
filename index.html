@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BOONT Predictor</title>
+    <title>BOONT CS2 Betting</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -11,47 +11,80 @@
 <body>
     <div class="app-container">
         <header class="app-header">
-            <h1>BOONT Predictor</h1>
-            <div class="balance">5 000 BOONT</div>
+            <h1>BOONT</h1>
+            <div class="user-info">
+                <span class="balance">2 000</span>
+                <span class="currency">BOONT</span>
+            </div>
         </header>
 
-        <nav class="tabs-container">
-            <button class="tab active" data-tab="predictor">Предиктор</button>
+        <nav class="tabs">
+            <button class="tab active" data-tab="tournament">Турнир</button>
             <button class="tab" data-tab="bets">Мои ставки</button>
             <button class="tab" data-tab="stats">Статистика</button>
-            <button class="tab" data-tab="rating">Рейтинг</button>
-            <button class="tab" data-tab="referral">Рефералка</button>
         </nav>
 
-        <main class="content-area">
-            <div class="tab-content active" data-tab="predictor">
-                <h2>Раздел "Предиктор"</h2>
-                <p>Здесь будут доступные для ставок матчи</p>
+        <main class="content">
+            <div class="tab-content active" id="tournament-content">
+                <div class="current-tournament">
+                    <h2>BLAST Premier Fall Groups 2024</h2>
+                    <p class="tournament-dates">15-21 июля 2024</p>
+                    <p class="tournament-prize">Призовой фонд: $177,498</p>
+                </div>
+
+                <div class="matches-list" id="matches-list">
+                    <!-- Matches will be loaded here -->
+                </div>
             </div>
-            
-            <div class="tab-content" data-tab="bets">
+
+            <div class="tab-content" id="bets-content">
                 <h2>Мои ставки</h2>
-                <p>История ваших ставок</p>
+                <div class="bets-list" id="bets-list">
+                    <!-- Bets will be shown here -->
+                </div>
             </div>
-            
-            <div class="tab-content" data-tab="stats">
+
+            <div class="tab-content" id="stats-content">
                 <h2>Статистика</h2>
-                <p>Ваша игровая статистика</p>
-            </div>
-            
-            <div class="tab-content" data-tab="rating">
-                <h2>Рейтинг</h2>
-                <p>Топ игроков</p>
-            </div>
-            
-            <div class="tab-content" data-tab="referral">
-                <h2>Реферальная программа</h2>
-                <p>Приглашайте друзей и получайте бонусы</p>
+                <div class="stats-container">
+                    <div class="stat-item">
+                        <span>Всего ставок:</span>
+                        <span id="total-bets">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Выиграно:</span>
+                        <span id="won-bets">0 BOONT</span>
+                    </div>
+                    <div class="stat-item">
+                        <span>Процент успеха:</span>
+                        <span id="success-rate">0%</span>
+                    </div>
+                </div>
             </div>
         </main>
 
-        <div class="bottom-menu">
-            <button class="deposit-btn">Пополнить баланс</button>
+        <div class="match-details-modal" id="match-modal">
+            <div class="modal-content">
+                <button class="close-modal">&times;</button>
+                <h3 id="modal-match-title"></h3>
+                <div class="teams-container" id="modal-teams">
+                    <!-- Teams will be shown here -->
+                </div>
+                <div class="bet-options">
+                    <h4>Основные ставки</h4>
+                    <div class="options-grid" id="main-bets">
+                        <!-- Main bets will be shown here -->
+                    </div>
+                    <h4>Ставки на фору</h4>
+                    <div class="options-grid" id="handicap-bets">
+                        <!-- Handicap bets will be shown here -->
+                    </div>
+                </div>
+                <div class="bet-controls">
+                    <input type="number" id="bet-amount" min="10" max="1000" value="100" placeholder="Сумма ставки">
+                    <button id="place-bet-button">Сделать ставку</button>
+                </div>
+            </div>
         </div>
     </div>
 
